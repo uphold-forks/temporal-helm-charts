@@ -14,13 +14,12 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
   annotations:
     {{- if .Values.cassandra.enabled }}
-    "helm.sh/hook": post-install
+    argocd.argoproj.io/hook: Sync
     {{- else }}
-    "helm.sh/hook": pre-install
+    argocd.argoproj.io/hook: PreSync
     {{- end }}
-    "helm.sh/hook-weight": "0"
     {{- if not .Values.debug }}
-    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded,HookFailed
     {{- end }}
 spec:
   backoffLimit: {{ .Values.schema.setup.backoffLimit }}
@@ -148,13 +147,12 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
   annotations:
     {{- if .Values.cassandra.enabled }}
-    "helm.sh/hook": post-install,pre-upgrade
+    argocd.argoproj.io/hook: Sync
     {{- else }}
-    "helm.sh/hook": pre-install,pre-upgrade
+    argocd.argoproj.io/hook: PreSync
     {{- end }}
-    "helm.sh/hook-weight": "1"
     {{- if not .Values.debug }}
-    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded,HookFailed
     {{- end }}
 spec:
   backoffLimit: {{ .Values.schema.update.backoffLimit }}
@@ -247,13 +245,12 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
   annotations:
     {{- if .Values.elasticsearch.external }}
-    "helm.sh/hook": pre-install
+    argocd.argoproj.io/hook: PreSync
     {{- else }}
-    "helm.sh/hook": post-install
+    argocd.argoproj.io/hook: Sync
     {{- end }}
-    "helm.sh/hook-weight": "0"
     {{- if not .Values.debug }}
-    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded,HookFailed
     {{- end }}
 spec:
   backoffLimit: {{ .Values.schema.setup.backoffLimit }}
